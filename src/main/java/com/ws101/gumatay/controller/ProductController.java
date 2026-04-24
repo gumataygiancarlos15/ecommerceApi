@@ -1,7 +1,7 @@
-package com.ws101.gumatay.controller;
+package com.ws101.gumatay.estrada.gallano.controller;
 
-import com.ws101.gumatay.model.Product;
-import com.ws101.gumatay.service.ProductService;
+import com.ws101.gumatay.estrada.gallano.model.Product;
+import com.ws101.gumatay.estrada.gallano.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

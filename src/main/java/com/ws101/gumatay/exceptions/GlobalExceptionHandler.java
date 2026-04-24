@@ -1,4 +1,4 @@
-package com.ws101.gumatay.exceptions;
+package com.ws101.gumatay.estrada.gallano.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
