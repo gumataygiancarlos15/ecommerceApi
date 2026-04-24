@@ -21,15 +21,15 @@ A RESTful API for managing products built with Spring Boot.
 
 ## API Endpoints
 
-| Method | URL | Description |
-| :--- | :--- | :--- |
-| GET | /api/v1/products | Get all products |
-| GET | /api/v1/products/{id} | Get product by ID |
-| POST | /api/v1/products | Create new product |
-| PUT | /api/v1/products/{id} | Update product |
-| PATCH | /api/v1/products/{id} | Partial update |
-| DELETE | /api/v1/products/{id} | Delete product |
-| GET | /api/v1/products/filter | Filter products |
+| Method | URL                     | Description        |
+|:-------|:------------------------|:-------------------|
+| GET    | /api/v1/products        | Get all products   |
+| GET    | /api/v1/products/{id}   | Get product by ID  |
+| POST   | /api/v1/products        | Create new product |
+| PUT    | /api/v1/products/{id}   | Update product     |
+| PATCH  | /api/v1/products/{id}   | Partial update     |
+| DELETE | /api/v1/products/{id}   | Delete product     |
+| GET    | /api/v1/products/filter | Filter products    |
 
 ## Author
 Gumatay, Estrada , Gallano

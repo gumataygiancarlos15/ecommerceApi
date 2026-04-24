@@ -1,4 +1,4 @@
-package com.ws101.gumatay,estrada,gallano.EcommerceApi.service;
+package com.ws101.gumatay.service;
 
 import com.ws101.gumatay.model.Product;
 import org.springframework.stereotype.Service;
