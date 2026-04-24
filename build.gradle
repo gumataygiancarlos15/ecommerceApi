@@ -6,8 +6,6 @@ plugins {
 
 
 group = 'com.ws101.gumatay.estrada.gallano'
-
-
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -21,6 +19,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
