@@ -1,4 +1,4 @@
-package com.ws101.GumatayEstrada.EcommerceApi;
+package com.ws101.gumatay;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,5 +9,4 @@ public class EcommerceApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EcommerceApiApplication.class, args);
 	}
-
 }

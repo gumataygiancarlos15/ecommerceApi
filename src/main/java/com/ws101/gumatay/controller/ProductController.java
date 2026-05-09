@@ -26,12 +26,9 @@ public class ProductController {
     // GET product by ID
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
-        if (product != null) {
-            return ResponseEntity.ok(product);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return productService.getProductById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     // POST create new product
@@ -44,10 +41,10 @@ public class ProductController {
     // PUT update entire product
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        Product updated = productService.updateProduct(id, product);
-        if (updated != null) {
+        try {
+            Product updated = productService.updateProduct(id, product);
             return ResponseEntity.ok(updated);
-        } else {
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -55,12 +52,11 @@ public class ProductController {
     // PATCH partial update
     @PatchMapping("/{id}")
     public ResponseEntity<Product> partialUpdate(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
-        Product existing = productService.getProductById(id);
+        Product existing = productService.getProductById(id).orElse(null);
         if (existing == null) {
             return ResponseEntity.notFound().build();
         }
 
-        // Apply updates
         if (updates.containsKey("name")) {
             existing.setName((String) updates.get("name"));
         }
@@ -69,9 +65,6 @@ public class ProductController {
         }
         if (updates.containsKey("price")) {
             existing.setPrice((Double) updates.get("price"));
-        }
-        if (updates.containsKey("category")) {
-            existing.setCategory((String) updates.get("category"));
         }
         if (updates.containsKey("stockQuantity")) {
             existing.setStockQuantity((Integer) updates.get("stockQuantity"));
@@ -111,7 +104,6 @@ public class ProductController {
                 result = productService.filterByName(filterValue);
                 break;
             case "price":
-                // Expect value like "min-max"
                 String[] range = filterValue.split("-");
                 double min = Double.parseDouble(range[0]);
                 double max = Double.parseDouble(range[1]);
