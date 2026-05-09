@@ -2,15 +2,16 @@ package com.ws101.gumatay.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import jdk.jfr.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * The Relationships present are ManyToOne and OneToMany
+ * Represents a product in the e-commerce system.
+ * Relationships present: ManyToOne (Category), OneToMany (OrderItem)
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,7 +35,6 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    @NotBlank(message = "Category is required")
     private String imageUrl;
 
     @Min(value = 0, message = "Stock cannot be negative")
@@ -53,7 +53,6 @@ public class Product {
      * @OneToMany: one product can be present in multiple orders.
      * ex: The newest apple model bought by multiple people.
      */
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderItem> orderItems = new List<OrderItem>();
+    private List<OrderItem> orderItems = new ArrayList<>();
 }
