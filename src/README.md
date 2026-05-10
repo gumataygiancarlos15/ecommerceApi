@@ -1,3 +1,8 @@
+## Frontend
+
+The frontend for this laboratory is available at:
+https://github.com/gumataygiancarlos15/ecommerce-interface-lab.git
+
 # Ecommerce API
 
 A RESTful API for managing products built with Spring Boot.
