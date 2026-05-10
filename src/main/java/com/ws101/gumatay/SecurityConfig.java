@@ -20,7 +20,6 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    // Password encoder bean using BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -31,23 +30,29 @@ public class SecurityConfig {
             throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints
+                        //Public endpoints
                         .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        // Protected endpoints
+                        //Protected endpoints
                         .requestMatchers(HttpMethod.POST, "/api/v1/products/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                // Enable form login
+
                 .formLogin(form -> form
                         .permitAll()
                 )
-                // Keep CSRF enabled for form submissions
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                )
+                //Keeps CSRF enabled for form submissions
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/api/v1/auth/**"))
-                // Session management
+                //Management(Session)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(
                                 org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
