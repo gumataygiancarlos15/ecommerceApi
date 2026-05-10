@@ -1,5 +1,7 @@
 package com.ws101.gumatay.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "categories")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Category {
 
     @Id
@@ -23,10 +26,11 @@ public class Category {
     private String name;
 
     /**
-     * @OneToMany: one product can be present in multiple orders.
-     * ex: The newest apple model bought by multiple people.
+     * @OneToMany: one category has many products.
+     * CascadeType.ALL: operations on Category propagate to its Products.
+     * FetchType.LAZY: Products are only loaded when explicitly accessed.
      */
-
+    @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products = new ArrayList<>();
 }

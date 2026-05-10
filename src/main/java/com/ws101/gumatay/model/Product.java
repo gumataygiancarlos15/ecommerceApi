@@ -1,5 +1,6 @@
 package com.ws101.gumatay.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -53,6 +54,7 @@ public class Product {
      * @OneToMany: one product can be present in multiple orders.
      * ex: The newest apple model bought by multiple people.
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 }
