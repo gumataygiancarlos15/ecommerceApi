@@ -128,5 +128,21 @@ This application uses **Session-Based Authentication** with Spring Security.
 ![Browser Console](screenshots/console1.png)
 ![Browser Console](screenshots/console2.png)
 
+## Demo Screenshots
+
+### 1. User Registration
+![Register](screenshots/register.png)
+
+### 2. User Login
+![Login](screenshots/login.png)
+
+### 3. Protected Action Failing (No Session)
+![No Session](screenshots/no-session.png)
+
+### 4. Protected Action Succeeding (With Session)
+![With Session](screenshots/with-session.png)
+
+### 5. Validation Error
+![Validation Error](screenshots/validation-error.png)
 ## Author
 Gumatay, Estrada, Gallano

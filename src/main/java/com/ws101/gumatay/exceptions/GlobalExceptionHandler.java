@@ -7,8 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import java.util.List;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -29,5 +33,19 @@ public class GlobalExceptionHandler {
         error.put("error", "Bad Request");
         error.put("message", "Data integrity violation: " + ex.getMostSpecificCause().getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidationErrors(MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(FieldError::getDefaultMessage)
+                .toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", "Validation Failed");
+        response.put("messages", errors);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
