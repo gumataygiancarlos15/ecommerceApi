@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -30,29 +32,32 @@ public class SecurityConfig {
             throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        //Public endpoints
+                        // Public endpoints
                         .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        //Protected endpoints
+                        // Protected endpoints
                         .requestMatchers(HttpMethod.POST, "/api/v1/products/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/products/**").authenticated()
+                        // Admin only
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
 
                 .formLogin(form -> form
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
                 )
-                //Keeps CSRF enabled for form submissions
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/v1/auth/**"))
-                //Management(Session)
+
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/v1/**"))
+
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(
                                 org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)

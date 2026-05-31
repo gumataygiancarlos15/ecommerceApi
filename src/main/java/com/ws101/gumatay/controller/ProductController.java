@@ -5,6 +5,7 @@ import com.ws101.gumatay.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,19 +13,18 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/products")
-@CrossOrigin(origins = "http://localhost:63342")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    // GET all products
+    // GET(products)
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
-    // GET product by ID
+    // GET(products by ID)
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         return productService.getProductById(id)
@@ -32,14 +32,16 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // POST create new product
+    // POST(new products)
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product created = productService.createProduct(product);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
-    // PUT update entire product
+    // PUT(update entire products)
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         try {
@@ -50,7 +52,8 @@ public class ProductController {
         }
     }
 
-    // PATCH partial update
+    // PATCH(partial udpate)
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{id}")
     public ResponseEntity<Product> partialUpdate(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
         Product existing = productService.getProductById(id).orElse(null);
@@ -78,7 +81,8 @@ public class ProductController {
         return ResponseEntity.ok(updated);
     }
 
-    // DELETE product
+    // DELETE
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         boolean deleted = productService.deleteProduct(id);
@@ -89,7 +93,7 @@ public class ProductController {
         }
     }
 
-    // FILTER products
+    // FILTER(products)
     @GetMapping("/filter")
     public ResponseEntity<List<Product>> filterProducts(
             @RequestParam String filterType,
